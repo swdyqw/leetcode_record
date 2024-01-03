@@ -15,6 +15,6 @@ class Solution {
                 return mid;
             }
         }
-        return right;
+        return right;// 或者left
     }
 }
