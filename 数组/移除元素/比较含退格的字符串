@@ -1,0 +1,38 @@
+//给定 s 和 t 两个字符串，当它们分别被输入到空白的文本编辑器后，如果两者相等，返回 true 。# 代表退格字符。
+//
+//        注意：如果对空文本输入退格字符，文本继续为空。
+
+class Solution {
+    public boolean backspaceCompare(String s, String t) {
+        int S = 0,T=0;
+        int i = s.length()-1;
+        int j = t.length()-1;
+        while (true){
+            for (; i >= 0; i--) {
+
+                if (s.charAt(i) == '#') {
+                    S++;
+                }else if (S != 0) {
+                    S--;
+                }else {
+                    break;
+                }
+            }
+            for (; j >= 0; j--) {
+                if (t.charAt(j) == '#') {
+                    T++;
+                }else if (T != 0) {
+                    T--;
+                }else {
+                    break;
+                }
+            }
+            if (i<0||j<0) break;
+            if (s.charAt(i)!=t.charAt(j)) return false;
+            i--;
+            j--;
+        }
+        if(i==-1&&j==-1) return true;
+        return false;
+    }
+}
