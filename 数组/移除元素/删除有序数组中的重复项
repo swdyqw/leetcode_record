@@ -7,17 +7,37 @@ package 数组.移除元素;
 //        更改数组 nums ，使 nums 的前 k 个元素包含唯一元素，并按照它们最初在 nums 中出现的顺序排列。nums 的其余元素与 nums 的大小不重要。
 //        返回 k 。
 
-class Solution {
-    public int removeDuplicates(int[] nums) {
-        int slowIndex = 0;
-        for(int fastIndex=1;fastIndex<nums.length;fastIndex++){
-            if(nums[fastIndex]!=nums[slowIndex]){
-                nums[++slowIndex]=nums[fastIndex];
-            }
-        }
-        return slowIndex;
-    }
-}
+//class Solution {
+//    public int removeDuplicates(int[] nums) {
+//        int slowIndex = 0;
+//        for(int fastIndex=1;fastIndex<nums.length;fastIndex++){
+//            if(nums[fastIndex]!=nums[slowIndex]){
+//                nums[slowIndex+1]=nums[fastIndex];
+//                slowIndex++;
+//            }
+//        }
+//        return slowIndex+1;
+//    }
+//}
+//
+//
+////通用法1
+//////为了让解法更具有一般性，我们将原问题的「最多保留 1 位」修改为「最多保留 k 位」。
+//
+//class Solution {
+//    public int removeDuplicates(int[] nums) {
+//        int slowIndex = 0;
+//        for(int fastIndex=k;fastIndex<nums.length;fastIndex++){
+//            if(nums[fastIndex]!=nums[slowIndex]){
+//                nums[slowIndex+k]=nums[fastIndex];
+//                slowIndex++;
+//            }
+//        }
+//        return slowIndex+k;
+//    }
+//}
+//
+////通用法2
 
 //为了让解法更具有一般性，我们将原问题的「最多保留 1 位」修改为「最多保留 k 位」。
 //
@@ -36,11 +56,7 @@ class Solution {
 //        继续这个过程，跳过剩余的 4，将第一个 5 追加进去。idx 变为 3，目标数组为 [3,4,5]
 //
 //        当整个数组被扫描完，最终我们得到了目标数组 [3,4,5] 和 答案 idx 为 3
-//
-//        作者：宫水三叶
-//        链接：https://leetcode.cn/problems/remove-duplicates-from-sorted-array/solutions/575549/shua-chuan-lc-jian-ji-shuang-zhi-zhen-ji-2eg8/
-//        来源：力扣（LeetCode）
-//        著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
 
 class Solution {
     public int removeDuplicates(int[] nums) {
