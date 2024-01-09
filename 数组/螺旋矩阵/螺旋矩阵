@@ -1,0 +1,54 @@
+给你一个 m 行 n 列的矩阵 matrix ，请按照 顺时针螺旋顺序 ，返回矩阵中的所有元素。
+
+示例 1：
+
+输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+输出：[1,2,3,6,9,8,7,4,5]
+
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result = new ArrayList<>();
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int startX = 0, startY = 0, offset = 1, count = 1, i = 0, j = 0;
+        if(matrix.length==1) {
+            for (i=startY; i < n; i++) {
+                result.add(matrix[startX][i]);
+            }
+            return result;
+        }
+        // if(matrix[0].length==1) {
+        //     for (j=startX; j < m; j++) {
+        //         result.add(matrix[j][i]);
+        //     }
+        //     return result;
+        // }
+        for (int circles = 0; circles < (Math.min(m, n) + 1) / 2; circles++) {
+            for (i=startY; i < n - offset; i++) {
+                result.add(matrix[startX][i]);
+            }
+
+            for (j=startX; j < m - offset; j++) {
+                result.add(matrix[j][i]);
+            }
+
+            for (; i > startY; i--) {
+                result.add(matrix[j][i]);
+                if (result.size()>=m*n) break;
+            }
+            if (result.size()>=m*n) break;
+            for (; j > startX; j--) {
+                result.add(matrix[j][startY]);
+                if (result.size()>=m*n) break;
+            }
+           if (m % 2 == 1&&m==n&&i+1==m/2) {
+               result.add(matrix[n/2][n/2]);
+               return result;
+           }
+            startX++;
+            startY++;
+            offset++;
+        }
+        return result;
+    }
+}
