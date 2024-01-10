@@ -1,0 +1,29 @@
+给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(0, head);
+        ListNode fast = dummy;
+        ListNode slow = dummy;
+        n++;
+        while(n-->0&&fast!=null){
+            fast=fast.next;
+        }
+        while(fast!=null){
+                fast=fast.next;
+                slow=slow.next;
+        }
+        slow.next=slow.next.next;
+        return dummy.next;
+    }
+}
