@@ -1,0 +1,30 @@
+给你一个字符串数组，请你将 字母异位词 组合在一起。可以按任意顺序返回结果列表。
+
+字母异位词 是由重新排列源单词的所有字母得到的一个新单词。
+
+ 
+
+示例 1:
+
+输入: strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+输出: [["bat"],["nat","tan"],["ate","eat","tea"]]
+
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        if (strs==null||strs.length==0){
+            return new ArrayList<>();
+        }
+        HashMap<String, List> map = new HashMap<>();
+        for (String s:strs){
+            char[] chars =  s.toCharArray();
+            Arrays.sort(chars);
+            String S = String.valueOf(chars);
+            if (!map.containsKey(S)){
+                map.put(S,new ArrayList<>());
+            }
+            map.get(S).add(s);
+        }
+        return new ArrayList(map.values());
+        // 不用泛型 默认是object
+    }
+}
