@@ -7,3 +7,25 @@
 如果这个过程 结果为 1，那么这个数就是快乐数。
 如果 n 是 快乐数 就返回 true ；不是，则返回 false 。
 
+class Solution {
+    public boolean isHappy(int n) {
+        HashSet<Integer> set = new HashSet<>();
+        int sum = n;
+        while (sum!=1&&!set.contains(sum)){
+            set.add(sum);
+            sum=getNums(sum);
+        }
+        return sum==1;
+    }
+    public int getNums(int n){
+        int res = 0;
+        while (n > 0) {
+            // 一直取 最后一位，做平方
+            int temp = n % 10;
+            res += temp * temp;
+            // 再去掉 最后一位，做循环
+            n /= 10;
+        }
+        return res;
+    }
+}
