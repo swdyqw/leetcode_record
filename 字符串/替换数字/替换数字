@@ -1,0 +1,26 @@
+给定一个字符串 s，它包含小写字母和数字字符，请编写一个函数，将字符串中的字母字符保持不变，而将每个数字字符替换为number。
+
+例如，对于输入字符串 "a1b2c3"，函数应该将其转换为 "anumberbnumbercnumber"。
+
+class Solution{
+    public String replaceNumbers(String s){
+        char[] chars = s.toCharArray();
+        char[] number = "number".toCharArray();
+        int len = chars.length;
+        for (int i = 0;i<chars.length ;i++){
+            if (chars[i]-'0'>=0&&chars[i]-'1'<=10){
+                len += 5;
+            }
+        }
+        char[] newChars = Arrays.copyOf(chars, len);
+        for (int left = chars.length-1, right = len-1;left>=0||right>=0;left--){
+            if (newChars[left]-'0'>=0&&newChars[left]-'1'<=10){
+                System.arraycopy(number,0,newChars,right-number.length+1,number.length);
+                right-=number.length;
+            }else {
+                newChars[right--]=newChars[left];
+            }
+        }
+        return new String(newChars);
+    }
+}
