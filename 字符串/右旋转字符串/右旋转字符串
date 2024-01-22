@@ -1,0 +1,28 @@
+字符串的右旋转操作是把字符串尾部的若干个字符转移到字符串的前面。给定一个字符串 s 和一个正整数 k，请编写一个函数，将字符串中的后面 k 个字符移到字符串的前面，实现字符串的右旋转操作。
+
+例如，对于输入字符串 "abcdefg" 和整数 2，函数应该将其转换为 "fgabcde"。
+
+import java.util.Scanner;
+
+class Main{
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int k = scanner.nextInt();
+        String s = scanner.next();
+        System.out.println(reverseS(k,s));
+    }
+    public static String reverseS(int k, String s){
+        char[] chars = s.toCharArray();
+        reverse(chars,0, chars.length-1);
+        reverse(chars,0,k-1);
+        reverse(chars,k, chars.length-1);
+        return new String(chars);
+    }
+    static void reverse(char[] chars, int start, int end){
+        for (;start<end;start++,end--){
+            char temp = chars[start];
+            chars[start] = chars[end];
+            chars[end] = temp;
+        }
+    }
+}
