@@ -1,0 +1,40 @@
+给定一个非空的字符串 s ，检查是否可以通过由它的一个子串重复多次构成。
+
+ 
+
+示例 1:
+
+输入: s = "abab"
+输出: true
+解释: 可由子串 "ab" 重复两次构成。
+
+// class Solution {
+//     public static boolean repeatedSubstringPattern(String s){
+//         String str = s+s;
+//         return str.substring(1,str.length()-1).contains(s);
+//     }
+// }
+
+class Solution{
+    public static boolean repeatedSubstringPattern(String s){
+        int[] next = getNext(s.toCharArray());
+        if (next[s.length()-1]>0&&(s.length()%(s.length()-next[s.length()-1]))==0) return true;
+        return false;
+    }
+    public static int[] getNext(char[] chars) {
+        int j = 0; // 指向前缀末尾
+        int i = 1; // 指向后缀末尾
+        int[] next = new int[chars.length];
+        next[0] = 0;
+        for (; i < chars.length; i++) {
+            while (j > 0 && chars[i] != chars[j]) {
+                j = next[--j];
+            }
+            if (chars[i] == chars[j]) {
+                j++;
+            }
+            next[i] = j;
+        }
+        return next;
+    }
+}
