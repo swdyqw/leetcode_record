@@ -14,12 +14,12 @@ boolean empty() 如果队列为空，返回 true ；否则，返回 false
 import java.util.Stack;
 
 class MyQueue {
-    Stack<Integer> stackIn;
-    Stack<Integer> stackOut;
+    Deque<Integer> stackIn;
+    Deque<Integer> stackOut;
 
     public MyQueue() {
-        stackIn = new Stack<>();
-        stackOut = new Stack<>();
+        stackIn = new ArrayDeque<>();
+        stackOut = new ArrayDeque<>();
     }
 
     public void push(int x) {
