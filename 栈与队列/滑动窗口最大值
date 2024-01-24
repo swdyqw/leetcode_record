@@ -1,0 +1,41 @@
+给你一个整数数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。
+
+返回 滑动窗口中的最大值 。
+
+
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        MaxQue maxQue = new MaxQue();
+        int[] res = new int[nums.length - k + 1];
+        int num = 0;
+        for (int i = 0; i < k; i++) {
+            maxQue.push(nums[i]);
+        }
+        res[num++] = maxQue.getMax();
+        for (int i = k; i < nums.length; i++) {
+            maxQue.pop(nums[i-k]);
+            maxQue.push(nums[i]);
+            res[num++]=maxQue.getMax();
+        }
+        return res;
+    }
+}
+
+class MaxQue{
+    Deque<Integer> que = new LinkedList<>();
+    void push(int val){
+        while (!que.isEmpty()&&que.getLast()<val){
+            que.removeLast();
+        }
+        que.add(val);
+    }
+    void pop(int val){
+        if (!que.isEmpty()&&que.peek()==val){
+            que.poll();
+        }
+    }
+    int getMax(){
+        return que.peek();
+    }
+}
+// 力扣不要用static！
