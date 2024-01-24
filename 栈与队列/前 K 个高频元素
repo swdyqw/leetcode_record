@@ -1,0 +1,24 @@
+给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。你可以按 任意顺序 返回答案。
+
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) map.put(num, map.getOrDefault(num, 0) + 1);
+        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[1] - o2[1]);
+        // 根据数组中第二个元素按从小到大顺序排序
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            int[] tmp = new int[2];
+            tmp[0] = entry.getKey();
+            tmp[1] = entry.getValue();
+            pq.offer(tmp);
+            if (pq.size() > k) {
+                pq.poll();
+            }
+        }
+        int[] res = new int[k];
+        for (int i = k - 1; i >= 0; i--) {
+            res[i] = pq.poll()[0];
+        }
+        return res;
+    }
+}
