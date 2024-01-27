@@ -22,3 +22,89 @@ class Solution {
         return res;
     }
 }
+
+给定一棵二叉树，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
+
+class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        ArrayDeque<TreeNode> deque = new ArrayDeque<>();
+        if (root != null) deque.push(root);
+        while (!deque.isEmpty()) {
+            int size = deque.size();
+            while (size-- != 0) {
+                TreeNode cur = deque.pollFirst();
+                if (cur.left != null)
+                    deque.addLast(cur.left);
+                if (cur.right != null)
+                    deque.addLast(cur.right);
+                if(size==0)
+                    res.add(cur.val);
+            }
+        }
+        return res;
+    }
+}
+
+给定一个二叉树，找出其最大深度。
+
+二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
+
+说明: 叶子节点是指没有子节点的节点。
+
+class Solution {
+    public int maxDepth(TreeNode root) {
+        ArrayDeque<TreeNode> deque = new ArrayDeque<>();
+        if (root != null)
+            deque.push(root);
+        int maxDepth = 0;
+        while (!deque.isEmpty()) {
+            int size = deque.size();
+            while (size-- != 0) {
+                TreeNode cur = deque.pollFirst();
+                if (cur.left != null)
+                    deque.addLast(cur.left);
+                if (cur.right != null)
+                    deque.addLast(cur.right);
+            }
+            maxDepth++;
+        }
+        return maxDepth;
+    }
+}
+
+// 记录遍历层数
+
+
+给定一个二叉树，找出其最小深度。
+
+最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+
+说明：叶子节点是指没有子节点的节点。
+
+class Solution {
+    public int minDepth(TreeNode root) {
+        ArrayDeque<TreeNode> deque = new ArrayDeque<>();
+        if (root != null)
+            deque.push(root);
+        int maxDepth = 0;
+        while (!deque.isEmpty()) {
+            int size = deque.size();
+            while (size-- != 0) {
+                TreeNode cur = deque.pollFirst();
+                if (cur.left != null)
+                    deque.addLast(cur.left);
+                if (cur.right != null)
+                    deque.addLast(cur.right);
+                if (cur.left == null && cur.right == null)
+                    return maxDepth+1;
+            }
+            maxDepth++;
+        }
+        return maxDepth;
+    }
+}
+
+// 当左右孩子都为空的时候，才说明遍历的最低点了
+
+
