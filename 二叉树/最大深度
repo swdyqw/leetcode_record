@@ -1,0 +1,45 @@
+给定一个二叉树，找出其最大深度。
+
+二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
+
+说明: 叶子节点是指没有子节点的节点。
+
+// 迭代遍历
+
+class Solution {
+    public int maxDepth(TreeNode root) {
+        ArrayDeque<TreeNode> deque = new ArrayDeque<>();
+        if (root != null)
+            deque.push(root);
+        int maxDepth = 0;
+        while (!deque.isEmpty()) {
+            int size = deque.size();
+            while (size-- != 0) {
+                TreeNode cur = deque.pollFirst();
+                if (cur.left != null)
+                    deque.addLast(cur.left);
+                if (cur.right != null)
+                    deque.addLast(cur.right);
+            }
+            maxDepth++;
+        }
+        return maxDepth;
+    }
+}
+
+// 记录遍历层数
+
+// 递归遍历
+class Solution {
+    public int maxDepth(TreeNode root) {
+        return getHeight(root);
+    }
+    // 得到最大高度 与最大深度相等 后序遍历
+    private int getHeight(TreeNode cur){
+        if(cur == null)
+            return 0;
+        int leftHeight = getHeight(cur.left);
+        int rightHeight = getHeight(cur.right);
+        return 1+Math.max(leftHeight, rightHeight);
+    }
+}
