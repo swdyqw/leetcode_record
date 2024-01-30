@@ -1,0 +1,30 @@
+给定一个二叉树的 根节点 root，请找出该二叉树的 最底层 最左边 节点的值。
+
+假设二叉树中至少有一个节点。
+
+class Solution {
+    int result = 0;
+    int maxDepth = 0;
+
+    public int findBottomLeftValue(TreeNode root) {
+        getRes(root, 0);
+        return result;
+    }
+
+    private void getRes(TreeNode root, int depth) {
+        if (root.left == null && root.right == null) {
+            if(depth>maxDepth){
+                maxDepth = depth;
+                result = root.val;
+            }
+        }
+        if (root.left != null) {
+            depth++;
+            getRes(root.left, depth);
+            depth--; // 回溯
+        }
+        // 可简化
+        if (root.right != null)
+            getRes(root.right, depth + 1);
+    }
+}
