@@ -18,6 +18,30 @@
 //        解释：可以采摘 [1,2,2] 这三棵树。
 //        如果从第一棵树开始采摘，则只能采摘 [0,1] 这两棵树。
 
+
+class Solution{
+    public int totalFruit(int[] fruits){
+        int[] cnt = new int[fruits.length + 1];
+        int left=0,right=0;
+        int res = 0;
+        int valid =0;
+        for (;right<fruits.length;right++){
+            cnt[fruits[right]]++;
+            if (cnt[fruits[right]]==1)
+                valid++;
+            while (valid>2){
+                cnt[fruits[left]]--;
+                if (cnt[fruits[left]]==0)
+                    valid--;
+                left++;
+            }
+            res = Math.max(res,right-left+1);
+        }
+        return res;
+    }
+
+}
+
 import java.util.HashMap;
 
 class Solution {
