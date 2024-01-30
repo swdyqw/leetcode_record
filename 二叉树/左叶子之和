@@ -1,0 +1,15 @@
+给定二叉树的根节点 root ，返回所有左叶子之和。
+
+class Solution {
+    public int sumOfLeftLeaves(TreeNode root) {
+        if (root == null)
+            return 0;
+        if (root.left == null && root.right == null)
+            return 0;
+        int leftNums = sumOfLeftLeaves(root.left);
+        if (root.left != null && root.left.left == null && root.left.right == null)
+            leftNums = root.left.val;
+        int rightNums = sumOfLeftLeaves(root.right);
+        return leftNums + rightNums;
+    }
+}
