@@ -8,6 +8,24 @@
 //        输出: 3
 //        解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
 
+
+// class Solution {
+//     public int lengthOfLongestSubstring(String s) {
+//         int left = 0, right = 0, res = 0, key=0;
+//         int[] cnt = new int[200];
+//         for (; right < s.length(); right++) {
+//             char now = s.charAt(right);
+//             cnt[now]++;
+//             while (cnt[now] >= 2) {
+//                 cnt[s.charAt(left)]--;
+//                 left++;
+//             }
+//             res = Math.max(res, right - left + 1);
+//         }
+//         return res;
+//     }
+// }
+
 class Solution {
     public int lengthOfLongestSubstring(String s) {
         int left = 0;
@@ -25,3 +43,21 @@ class Solution {
         return result;
     }
 }
+
+// class Solution {
+//     public int lengthOfLongestSubstring(String s) {
+//         int left = 0;
+//         int result = 0;
+//         HashMap<Character, Integer> map = new HashMap<>();
+//         for (int right = 0; right < s.length(); right++) {
+//             char alpha = s.charAt(right);
+//             map.put(alpha, map.getOrDefault(alpha, 0) + 1);
+//             while (map.get(alpha) > 1) {
+//                 map.put(s.charAt(left), map.getOrDefault(s.charAt(left), 0) - 1);
+//                 left++;
+//             }
+//             result = Math.max(result, right - left + 1);
+//         }
+//         return result;
+//     }
+// }
