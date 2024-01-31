@@ -1,0 +1,74 @@
+给定两个整数数组 inorder 和 postorder ，其中 inorder 是二叉树的中序遍历， postorder 是同一棵树的后序遍历，请你构造并返回这颗 二叉树 。
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ * int val;
+ * TreeNode left;
+ * TreeNode right;
+ * TreeNode() {}
+ * TreeNode(int val) { this.val = val; }
+ * TreeNode(int val, TreeNode left, TreeNode right) {
+ * this.val = val;
+ * this.left = left;
+ * this.right = right;
+ * }
+ * }
+ */
+// class Solution {
+//     public TreeNode buildTree(int[] inorder, int[] postorder) {
+//         if (postorder.length == 0)
+//             return null;
+//         int rootval = postorder[postorder.length - 1];
+//         TreeNode root = new TreeNode(rootval, null, null);
+//         if (postorder.length == 1)
+//             return root;
+//         int index = 0;
+//         for (; index < inorder.length; index++) {
+//             if (inorder[index] == rootval)
+//                 break;
+//         }
+//         int[] leftInorder = Arrays.copyOfRange(inorder, 0, index);
+//         int[] rightInorder = Arrays.copyOfRange(inorder, index + 1, inorder.length);
+//         int[] leftPostorder = Arrays.copyOfRange(postorder, 0, leftInorder.length);
+//         int[] rightPostorder = Arrays.copyOfRange(postorder, leftInorder.length, postorder.length - 1);
+//         root.left = buildTree(leftInorder, leftPostorder);
+//         root.right = buildTree(rightInorder, rightPostorder);
+//         return root;
+//     }
+// }
+
+class Solution {
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        if(postorder.length == 0 || inorder.length == 0)
+            return null;
+        return buildHelper(inorder, 0, inorder.length, postorder, 0, postorder.length);
+    
+    }
+    private TreeNode buildHelper(int[] inorder, int inorderStart, int inorderEnd, int[] postorder, int postorderStart, int postorderEnd){
+        if(postorderStart == postorderEnd)
+            return null;
+        int rootVal = postorder[postorderEnd - 1];
+        TreeNode root = new TreeNode(rootVal);
+        int middleIndex;
+        for (middleIndex = inorderStart; middleIndex < inorderEnd; middleIndex++){
+            if(inorder[middleIndex] == rootVal)
+                break;
+        }
+
+        int leftInorderStart = inorderStart; 
+        int leftInorderEnd = middleIndex;
+        int rightInorderStart = middleIndex + 1;
+        int rightInorderEnd = inorderEnd;
+
+
+        int leftPostorderStart = postorderStart;
+        int leftPostorderEnd = postorderStart + (middleIndex - inorderStart);
+        int rightPostorderStart = leftPostorderEnd;
+        int rightPostorderEnd = postorderEnd - 1;
+        root.left = buildHelper(inorder, leftInorderStart, leftInorderEnd,  postorder, leftPostorderStart, leftPostorderEnd);
+        root.right = buildHelper(inorder, rightInorderStart, rightInorderEnd, postorder, rightPostorderStart, rightPostorderEnd);
+
+        return root;
+    }  
+}
