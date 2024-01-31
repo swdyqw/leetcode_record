@@ -1,0 +1,33 @@
+给定一个不重复的整数数组 nums 。 最大二叉树 可以用下面的算法从 nums 递归地构建:
+
+创建一个根节点，其值为 nums 中的最大值。
+递归地在最大值 左边 的 子数组前缀上 构建左子树。
+递归地在最大值 右边 的 子数组后缀上 构建右子树。
+返回 nums 构建的 最大二叉树 。
+
+
+class Solution {
+    public TreeNode constructMaximumBinaryTree(int[] nums) {
+        return construct(nums, 0, nums.length);
+    }
+
+    public TreeNode construct(int[] nums, int begin, int end) {
+//        if (nums.length == 1) return new TreeNode(nums[0]);
+        if (end - begin < 1) return null;
+        if (end - begin == 1) return new TreeNode(nums[begin]);
+        int maxVal = 0;
+        int index = 0;
+        for (int i = begin; i < end; i++) {
+            if (nums[i] > maxVal) {
+                maxVal = nums[i];
+                index = i;
+            }
+        }
+        TreeNode node = new TreeNode(maxVal);
+        // if (index > 0) // 为了满足终止条件 保证左边至少有一个元素
+        node.left = construct(nums, begin, index);
+        // if (index < nums.length - 1)
+        node.right = construct(nums, index + 1, end);
+        return node;
+    }
+}
