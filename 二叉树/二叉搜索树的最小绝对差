@@ -1,0 +1,26 @@
+给你一个二叉搜索树的根节点 root ，返回 树中任意两不同节点值之间的最小差值 。
+
+差值是一个正数，其数值等于两值之差的绝对值。
+
+class Solution {
+    int res = Integer.MAX_VALUE;
+    TreeNode pre = null;
+
+    public int getMinimumDifference(TreeNode root) {
+        traversal(root);
+        return res;
+    }
+
+    void traversal(TreeNode root) {
+        if (root == null)
+            return;
+        TreeNode cur = root;
+        if (root.left != null)
+            traversal(root.left);
+        if (pre != null)
+            res = Math.min(res, cur.val - pre.val);
+        pre = cur;
+        if (root.right != null)
+            traversal(root.right);
+    }
+}
