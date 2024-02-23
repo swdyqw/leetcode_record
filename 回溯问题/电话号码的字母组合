@@ -1,0 +1,31 @@
+给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。
+
+给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+
+class Solution {
+    List<String> result = new ArrayList<>();
+    StringBuilder s = new StringBuilder();
+
+    public List<String> letterCombinations(String digits) {
+        if (digits == null || digits.length() == 0) {
+            return result;
+        }
+        String[] letterMap = { "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz" };
+        backTracking(digits, letterMap, 0);
+        return result;
+    }
+
+    public void backTracking(String digits, String[] letterMap, int index) {
+        if (index == digits.length()) {
+            result.add(new String(s));
+            return;
+        }
+        int digit = digits.charAt(index) - '0';
+        String letter = letterMap[digit];
+        for (int i = 0; i < letter.length(); i++) {
+            s.append(letter.charAt(i));
+            backTracking(digits, letterMap, index + 1);
+            s.deleteCharAt(s.length() - 1);
+        }
+    }
+}
