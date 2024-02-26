@@ -18,7 +18,7 @@ class Solution {
         if (sum > target)
             return;
         if (sum == target) {
-            result.add(new ArrayList(path)); // 每次需要new一下
+            result.add(new ArrayList(path)); // 每次需要new一下,path元素数值一直变化，需要复制到一个新的list中
             return;
         }
         for (int i = startIndex; i < candidates.length; i++) {
