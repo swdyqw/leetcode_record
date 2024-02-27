@@ -22,7 +22,7 @@ class Solution {
         }
         int digit = digits.charAt(index) - '0';
         String letter = letterMap[digit];
-        for (int i = 0; i < letter.length(); i++) {
+        for (int i = 0; i < letter.length(); i++) {   // 此处不用satartIndex,因为每次都从头开始取，不需要去重
             s.append(letter.charAt(i));
             backTracking(digits, letterMap, index + 1);
             s.deleteCharAt(s.length() - 1);
