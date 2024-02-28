@@ -1,0 +1,37 @@
+给你一个字符串 s，请你将 s 分割成一些子串，使每个子串都是 回文串 。返回 s 所有可能的分割方案。
+
+回文串 是正着读和反着读都一样的字符串。
+
+class Solution {
+    List<String> path = new ArrayList<>();
+    List<List<String>> result = new ArrayList<>();
+    public List<List<String>> partition(String s) {
+        backTracking(s,0);
+        return result;
+    }
+    public void backTracking(String s, int startIndex){
+        if(startIndex==s.length()){
+            result.add(new ArrayList<>(path));
+            return;
+        }
+        for(int i = startIndex;i<s.length();i++){ //index是上个切割点，i是当前切割点
+            if(isPalindrome(s,startIndex,i)){
+                path.add(new String(s.substring(startIndex,i+1)));
+            } else continue;
+            backTracking(s,i+1);
+            path.remove(path.size()-1);
+        }
+    }
+    public boolean isPalindrome(String ss,int start, int end){
+        String s = ss.substring(start,end+1);
+        int left = 0;
+        int right = s.length()-1;
+        while(left<right){
+            if(s.charAt(left)!=(s.charAt(right)))
+                return false;
+            left++;
+            right--;
+        }
+        return true;
+    }
+}
