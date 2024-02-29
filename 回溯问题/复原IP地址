@@ -1,0 +1,50 @@
+有效 IP 地址 正好由四个整数（每个整数位于 0 到 255 之间组成，且不能含有前导 0），整数之间用 '.' 分隔。
+
+例如："0.1.2.201" 和 "192.168.1.1" 是 有效 IP 地址，但是 "0.011.255.245"、"192.168.1.312" 和 "192.168@1.1" 是 无效 IP 地址。
+给定一个只包含数字的字符串 s ，用以表示一个 IP 地址，返回所有可能的有效 IP 地址，这些地址可以通过在 s 中插入 '.' 来形成。你 不能 重新排序或删除 s 中的任何数字。你可以按 任何 顺序返回答案。
+
+
+class Solution {
+    List<String> result = new ArrayList<>();
+
+    public List<String> restoreIpAddresses(String s) {
+        StringBuilder ss = new StringBuilder(s);
+        backTracking(ss, 0, 0);
+        return result;
+    }
+
+    public void backTracking(StringBuilder s, int startIndex, int pointSum) {
+        if (pointSum == 3) {
+            if (isValid(s, startIndex, s.length() - 1)) {
+                result.add(s.toString());
+            }
+            return;
+        }
+        for (int i = startIndex; i < s.length(); i++) {
+            if (isValid(s, startIndex, i)) {
+                s.insert(i + 1, ".");
+                pointSum += 1;
+                backTracking(s, i + 2, pointSum);
+                pointSum -= 1;
+                s.deleteCharAt(i + 1);
+            }
+        }
+    }
+
+    public boolean isValid(StringBuilder s, int start, int end) {
+        if (start > end)
+            return false;
+        if (s.charAt(start) == '0' && start != end) // 0开头不合法 但如果只有一个0合法
+            return false;
+        int num = 0;
+        for (; start <= end; start++) {
+            if (s.charAt(start) < '0' || s.charAt(start) > '9')
+                return false;
+            int digit = s.charAt(start) - '0';
+            num = num * 10 + digit;
+            if (num > 255)
+                return false;
+        }
+        return true;
+    }
+}
