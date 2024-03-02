@@ -1,0 +1,29 @@
+给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。
+
+class Solution {
+    List<Integer> path = new ArrayList<>();
+    List<List<Integer>> result = new ArrayList<>();
+    boolean[] used;
+
+    public List<List<Integer>> permute(int[] nums) {
+        used = new boolean[nums.length];
+        backTracking(nums, used);
+        return result;
+    }
+
+    public void backTracking(int[] nums, boolean[] used) {
+        if (path.size() == nums.length) {
+            result.add(new ArrayList<>(path));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (used[i] == true)
+                continue;
+            path.add(nums[i]);
+            used[i] = true;
+            backTracking(nums, used);
+            path.remove(path.size() - 1);
+            used[i] = false;
+        }
+    }
+}
