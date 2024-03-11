@@ -1,0 +1,54 @@
+给定一个二叉树，我们在树的节点上安装摄像头。
+
+节点上的每个摄影头都可以监视其父对象、自身及其直接子对象。
+
+计算监控树的所有节点所需的最小摄像头数量。
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ * int val;
+ * TreeNode left;
+ * TreeNode right;
+ * TreeNode() {}
+ * TreeNode(int val) { this.val = val; }
+ * TreeNode(int val, TreeNode left, TreeNode right) {
+ * this.val = val;
+ * this.left = left;
+ * this.right = right;
+ * }
+ * }
+ */
+class Solution {
+    int res = 0;
+
+    public int minCameraCover(TreeNode root) {
+        if (traversal(root) == 0)
+            res++;
+        return res;
+    }
+    // 0 无覆盖
+    // 1 有摄像头
+    // 2 有覆盖
+
+    // 四种情况：
+    // 左右都有覆盖
+    // 左右至少一个无覆盖
+    // 左右至少一个摄像头
+    // 根节点无覆盖
+    public int traversal(TreeNode cur) {
+        if (cur == null)
+            return 2;
+        int left = traversal(cur.left);
+        int right = traversal(cur.right);
+        if (left == 2 && right == 2)
+            return 0;
+        if (left == 0 || right == 0) {
+            res++;
+            return 1;
+        }
+        if (left == 1 || right == 1)
+            return 2;
+        return -1;
+    }
+}
