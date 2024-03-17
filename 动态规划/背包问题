@@ -1,0 +1,68 @@
+题目描述
+小明是一位科学家，他需要参加一场重要的国际科学大会，以展示自己的最新研究成果。他需要带一些研究材料，但是他的行李箱空间有限。这些研究材料包括实验设备、文献资料和实验样本等等，它们各自占据不同的空间，并且具有不同的价值。 
+
+小明的行李空间为 N，问小明应该如何抉择，才能携带最大价值的研究材料，每种研究材料只能选择一次，并且只有选与不选两种选择，不能进行切割。
+
+输入描述
+第一行包含两个正整数，第一个整数 M 代表研究材料的种类，第二个正整数 N，代表小明的行李空间。
+
+第二行包含 M 个正整数，代表每种研究材料的所占空间。 
+
+第三行包含 M 个正整数，代表每种研究材料的价值。
+
+输出描述
+输出一个整数，代表小明能够携带的研究材料的最大价值。
+输入示例
+6 1
+2 2 3 1 5 2
+2 3 1 5 4 3
+输出示例
+5
+
+
+import java.util.*;
+
+class Solution {
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int kinds = scanner.nextInt();
+        int weight = scanner.nextInt();
+        int[] weights = new int[kinds];
+        int[] values = new int[kinds];
+        for (int i = 0; i < kinds; i++) {
+            weights[i] = scanner.nextInt();
+        }
+        for (int i = 0; i < kinds; i++) {
+            values[i] = scanner.nextInt();
+        }
+        int[][] dp = new int[kinds][weight+1];
+//        在[0,kinds]的物品中，任取 放进重量为weight背包中的最大价值
+        for (int i = weights[0]; i <= weight; i++) {
+//            背包容量大于物品0容量时才能放入 产生价值
+            dp[0][i] = values[0];
+        }
+        for (int i = 1; i < kinds; i++) {
+            dp[i][0] = 0;
+        }
+        for (int i = 1; i < kinds; i++) {
+            for (int j = 0; j < weight+1; j++) {
+                if(j<weights[i])
+                    dp[i][j] = dp[i-1][j];
+//                当前背包的容量都没有当前物品i大的时候，是不放物品i的
+                else
+                    dp[i][j] = Math.max(dp[i-1][j],dp[i-1][j-weights[i]]+values[i]);
+                /*
+                 * 当前背包的容量可以放下物品i
+                 * 那么此时分两种情况：
+                 *    1、不放物品i
+                 *    2、放物品i
+                 * 比较这两种情况下，哪种背包中物品的最大价值最大
+                 */
+            }
+        }
+        System.out.println(dp[kinds-1][weight]);
+
+        for(int[] arr : dp){
+            System.out.println(Arrays.toString(arr));
+        }
+    }
