@@ -97,9 +97,8 @@ class Solution {
             dp[i] = 0;
         }
         for (int i = 1; i < kinds; i++) {
-            for (int j = 0; j < weight+1; j++) {
-                if(j>=weights[i])
-                    dp[j] = Math.max(dp[j],dp[j-weights[i]]+values[i]);
+            for (int j = weight; j >= weight[i]; j--) {
+                dp[j] = Math.max(dp[j],dp[j-weights[i]]+values[i]);
                 /*
                  * 当前背包的容量可以放下物品i
                  * 那么此时分两种情况：
