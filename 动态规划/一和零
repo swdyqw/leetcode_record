@@ -1,0 +1,29 @@
+给你一个二进制字符串数组 strs 和两个整数 m 和 n 。
+
+请你找出并返回 strs 的最大子集的长度，该子集中 最多 有 m 个 0 和 n 个 1 。
+
+如果 x 的所有元素也是 y 的元素，集合 x 是集合 y 的 子集 。
+
+// 装满背包最多多少个物品   
+class Solution {
+    public int findMaxForm(String[] strs, int m, int n) {
+        int[][] dp = new int[m + 1][n + 1];
+        // dp[i][j]表示i个0j个1容量的背包最多dp[i][j]个物品
+        for (String str : strs) {
+            int x = 0;
+            int y = 0;
+            for (int c = 0; c < str.length(); c++) {
+                if (str.charAt(c) == '0')
+                    x++;
+                else
+                    y++;
+            }
+            for (int i = m; i >= x; i--) {
+                for (int j = n; j >= y; j--) {
+                    dp[i][j] = Math.max(dp[i][j], dp[i - x][j - y] + 1);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+}
