@@ -19,7 +19,7 @@
 输出示例
 5
 
-
+二维数组：
 import java.util.*;
 
 class Solution {
@@ -65,4 +65,50 @@ class Solution {
         for(int[] arr : dp){
             System.out.println(Arrays.toString(arr));
         }
+    }
+
+
+一维滚动数组：
+区别1：为什么背包要从后往前遍历
+二维数组中每层数据由上一层推导而来，每层数据单独隔开，所以正序倒序不受影响；一维数组中，每层数据循环利用，正序会导致新值与旧值会冲突，可能一个物品被多次添加，只有倒序才保证物品只添加一次
+区别2：为什么遍历顺序不能改变
+只能先遍历物品再遍历背包，一维数组中，每层数据循环利用，并且要根据上一个dp[j]推导出新的dp[j]，改变顺序后不能满足递归公式
+
+import java.util.*;
+
+class Solution {
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        Scanner scanner = new Scanner(System.in);
+        int kinds = scanner.nextInt();
+        int weight = scanner.nextInt();
+        int[] weights = new int[kinds];
+        int[] values = new int[kinds];
+        for (int i = 0; i < kinds; i++) {
+            weights[i] = scanner.nextInt();
+        }
+        for (int i = 0; i < kinds; i++) {
+            values[i] = scanner.nextInt();
+        }
+        int[] dp = new int[weight+1];
+//        重量为weight背包中的最大价值
+        for (int i = 0; i <= weight; i++) {
+//            递归公式要与上一个自己进行比较 取最大值 所以初始化为0可保证递归值不被太大的初始化值覆盖
+            dp[i] = 0;
+        }
+        for (int i = 1; i < kinds; i++) {
+            for (int j = 0; j < weight+1; j++) {
+                if(j>=weights[i])
+                    dp[j] = Math.max(dp[j],dp[j-weights[i]]+values[i]);
+                /*
+                 * 当前背包的容量可以放下物品i
+                 * 那么此时分两种情况：
+                 *    1、不放物品i
+                 *    2、放物品i
+                 * 比较这两种情况下，哪种背包中物品的最大价值最大
+                 */
+            }
+        }
+        System.out.println(dp[weight]);
+        System.out.println(Arrays.toString(dp));
     }
