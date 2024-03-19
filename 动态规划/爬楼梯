@@ -15,3 +15,30 @@ class Solution {
         return dp[n];
     }
 }
+
+面试题拓展 每次可以爬m个台阶 有多少方法
+其实是完全背包问题，等价于装满背包有多少种方法
+并且需要先遍历背包后遍历物品 求排列数 考虑物品顺序
+
+import java.util.Scanner;
+class climbStairs{
+    public static void main(String [] args){
+        Scanner sc = new Scanner(System.in);
+        int m, n;
+        while (sc.hasNextInt()) {
+            // 从键盘输入参数，中间用空格隔开
+            n = sc.nextInt();
+            m = sc.nextInt();
+
+            // 求排列问题，先遍历背包再遍历物品
+            int[] dp = new int[n + 1];
+            dp[0] = 1;
+            for (int j = 1; j <= n; j++) {
+                for (int i = 1; i <= m; i++) {
+                    if (j - i >= 0) dp[j] += dp[j - i];
+                }
+            }
+            System.out.println(dp[n]);
+        }
+    }
+}
