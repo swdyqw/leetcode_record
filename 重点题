@@ -23,6 +23,7 @@
 滑动窗口最大值
 347. 前 K 个高频元素 // 优先级队列
 回溯 
+startIndex目的是去重
 本题还需要startIndex来控制for循环的起始位置，对于组合问题，什么时候需要startIndex呢？
 
 我举过例子，如果是一个集合来求组合的话，就需要startIndex，例如：77.组合 (opens new window)，216.组合总和III (opens new window)。
