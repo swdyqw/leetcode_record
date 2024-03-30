@@ -1,0 +1,22 @@
+给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+
+
+class Solution {
+    public int trap(int[] height) {
+        Deque<Integer> st = new ArrayDeque<Integer>();
+        int sum = 0;
+        st.push(0);
+        for (int i = 1; i < height.length; i++) {
+            while (!st.isEmpty() && height[i] > height[st.peek()]) {
+                int mid = st.pop();
+                if (!st.isEmpty()) {
+                    int h = Math.min(height[i], height[st.peek()]) - height[mid];
+                    int w = i - st.peek() - 1;
+                    sum += h * w;
+                }
+            }
+            st.push(i);
+        }
+        return sum;
+    }
+}
