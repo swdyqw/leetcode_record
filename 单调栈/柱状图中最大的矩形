@@ -1,0 +1,25 @@
+给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
+
+求在该柱状图中，能够勾勒出来的矩形的最大面积。
+
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        Deque<Integer> st = new ArrayDeque<>();
+        int[] newHeights = new int[heights.length + 2];
+        System.arraycopy(heights, 0, newHeights, 1, heights.length);
+        int res = 0;
+        st.push(0);
+        for (int i = 1; i < newHeights.length; i++) {
+            while (!st.isEmpty() && newHeights[i] < newHeights[st.peek()]) {
+                int mid = st.pop();
+                if (!st.isEmpty()) {
+                    int h = newHeights[mid];
+                    int w = i - st.peek() - 1;
+                    res = Math.max(h * w, res);
+                }
+            }
+            st.push(i);
+        }
+        return res;
+    }
+}
