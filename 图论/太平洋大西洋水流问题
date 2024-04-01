@@ -1,0 +1,110 @@
+有一个 m × n 的矩形岛屿，与 太平洋 和 大西洋 相邻。 “太平洋” 处于大陆的左边界和上边界，而 “大西洋” 处于大陆的右边界和下边界。
+
+这个岛被分割成一个由若干方形单元格组成的网格。给定一个 m x n 的整数矩阵 heights ， heights[r][c] 表示坐标 (r, c) 上单元格 高于海平面的高度 。
+
+岛上雨水较多，如果相邻单元格的高度 小于或等于 当前单元格的高度，雨水可以直接向北、南、东、西流向相邻单元格。水可以从海洋附近的任何单元格流入海洋。
+
+返回网格坐标 result 的 2D 列表 ，其中 result[i] = [ri, ci] 表示雨水从单元格 (ri, ci) 流动 既可流向太平洋也可流向大西洋 。
+
+
+// class Solution {
+//     int[][] move = {
+//             { 0, 1 }, // right
+//             { 1, 0 }, // down
+//             { 0, -1 }, // left
+//             { -1, 0 } // up
+//     };
+
+//     public List<List<Integer>> pacificAtlantic(int[][] heights) {
+//         int rowSize = heights.length;
+//         int colSize = heights[0].length;
+//         boolean[][][] visited = new boolean[rowSize][colSize][2];
+//         List<List<Integer>> res = new ArrayList<>();
+//         // 0 太平洋 1 大西洋
+//         for (int i = 0; i < rowSize; i++) {
+//             visited[i][0][0] = true;
+//             visited[i][colSize - 1][1] = true;
+//             dfs(heights, i, 0, 0, visited);
+//             dfs(heights, i, colSize - 1, 1, visited);
+//         }
+//         for (int i = 1; i < colSize - 1; i++) {
+//             visited[0][i][0] = true;
+//             visited[rowSize - 1][i][1] = true;
+//             dfs(heights, 0, i, 0, visited);
+//             dfs(heights, rowSize - 1, i, 1, visited);
+//         }
+//         for (int i = 0; i < rowSize; i++) {
+//             for (int j = 0; j < colSize; j++) {
+//                 if (visited[i][j][0] && visited[i][j][1])
+//                     res.add(List.of(i, j));
+//             }
+//         }
+//         return res;
+//     }
+
+//     public void dfs(int[][] heights, int row, int col, int sign, boolean[][][] visited) {
+//         for (int i = 0; i < 4; i++) {
+//             int newRow = row + move[i][0];
+//             int newCol = col + move[i][1];
+//             if (newRow < 0 || newRow >= heights.length || newCol < 0 || newCol >= heights[0].length)
+//                 continue;
+//             if (!visited[newRow][newCol][sign] && heights[newRow][newCol] >= heights[row][col]) {
+//                 visited[newRow][newCol][sign] = true;
+//                 dfs(heights, newRow, newCol, sign, visited);
+//             }
+//         }
+//     }
+// }
+
+class Solution {
+    // 四个位置
+    private static final int[][] position = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+
+    /**
+     * @param heights 题目给定的二维数组
+     * @param row 当前位置的行号
+     * @param col 当前位置的列号
+     * @param sign 记录是哪一条河，两条河中可以一个为 0，一个为 1
+     * @param visited 记录这个位置可以到哪条河
+     */
+    public void dfs(int[][] heights, int row, int col, int sign, boolean[][][] visited) {
+        for (int[] current: position) {
+            int curRow = row + current[0], curCol = col + current[1];
+            // 越界
+            if (curRow < 0 || curRow >= heights.length || curCol < 0 || curCol >= heights[0].length)
+                continue;
+            // 高度不合适或者已经被访问过了
+            if (heights[curRow][curCol] < heights[row][col] || visited[curRow][curCol][sign]) continue;
+            visited[curRow][curCol][sign] = true;
+            dfs(heights, curRow, curCol, sign, visited);
+        }
+    }
+
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        int rowSize = heights.length, colSize = heights[0].length;
+        List<List<Integer>> ans = new ArrayList<>();
+        // 记录 [row, col] 位置是否可以到某条河，可以为 true，反之为 false；
+        // 假设太平洋的标记为 1，大西洋为 0
+        boolean[][][] visited = new boolean[rowSize][colSize][2];
+        for (int row = 0; row < rowSize; row++) {
+            visited[row][colSize - 1][0] = true;
+            visited[row][0][1] = true;
+            dfs(heights, row, colSize - 1, 0, visited);
+            dfs(heights, row, 0, 1, visited);
+        }
+        for (int col = 0; col < colSize; col++) {
+            visited[rowSize - 1][col][0] = true;
+            visited[0][col][1] = true;
+            dfs(heights, rowSize - 1, col, 0, visited);
+            dfs(heights, 0, col, 1, visited);
+        }
+        for (int row = 0; row < rowSize; row++) {
+            for (int col = 0; col < colSize; col++) {
+                // 如果该位置即可以到太平洋又可以到大西洋，就放入答案数组
+                if (visited[row][col][0] && visited[row][col][1])
+                    ans.add(List.of(row, col));
+            }
+        }
+        return ans;
+    }
+}
