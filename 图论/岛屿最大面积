@@ -1,0 +1,110 @@
+给你一个大小为 m x n 的二进制矩阵 grid 。
+
+岛屿 是由一些相邻的 1 (代表土地) 构成的组合，这里的「相邻」要求两个 1 必须在 水平或者竖直的四个方向上 相邻。你可以假设 grid 的四个边缘都被 0（代表水）包围着。
+
+岛屿的面积是岛上值为 1 的单元格的数目。
+
+计算并返回 grid 中最大的岛屿面积。如果没有岛屿，则返回面积为 0 。
+
+
+// dfs
+class Solution {
+    boolean[][] visited;
+    int[][] move = {
+            { 0, 1 }, // right
+            { 1, 0 }, // down
+            { 0, -1 }, // left
+            { -1, 0 } // up
+    };
+    int count;
+
+    public int maxAreaOfIsland(int[][] grid) {
+        int res = 0;
+        visited = new boolean[grid.length][grid[0].length];
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (visited[i][j] == false && grid[i][j] == 1) {
+                    count = 1;
+                    // dfs遍历下一个节点 所以初始化为1，另外一个版本遍历当前节点 初始化为0
+                    visited[i][j] = true;
+                    dfs(grid, i, j);
+                    res = Math.max(res, count);
+                }
+            }
+        }
+        return res;
+    }
+
+    public void dfs(int[][] grid, int x, int y) {
+        // if(visited[x][y] == true||grid[x][y]==0)
+        // return;
+        // visited[x][y] = true;
+        // count++;
+        for (int i = 0; i < 4; i++) {
+            int nextX = x + move[i][0];
+            int nextY = y + move[i][1];
+            if (0 > nextX || nextX >= grid.length || 0 > nextY || nextY >= grid[0].length)
+                continue;
+            if (!visited[nextX][nextY] && grid[nextX][nextY] == 1) {
+                count++;
+                visited[nextX][nextY] = true;
+                dfs(grid, nextX, nextY);
+            }
+            // dfs(grid,nextX,nextY);
+        }
+    }
+}
+
+// bfs
+class Solution {
+    boolean[][] visited;
+    int[][] move = {
+            { 0, 1 }, // right
+            { 1, 0 }, // down
+            { 0, -1 }, // left
+            { -1, 0 } // up
+    };
+    int count;
+
+    public int maxAreaOfIsland(int[][] grid) {
+        int res = 0;
+        visited = new boolean[grid.length][grid[0].length];
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (visited[i][j] == false && grid[i][j] == 1) {
+                    count = 0;
+                    // visited[i][j]=true;
+                    bfs(grid, i, j);
+                    res = Math.max(res, count);
+                }
+            }
+        }
+        return res;
+    }
+
+    public void bfs(int[][] grid, int x, int y) {
+        Deque<Integer> que = new ArrayDeque<>();
+        que.offer(x);
+        que.offer(y);
+        count++;
+        visited[x][y] = true;
+        // 刚进队列就要标记 而不是出队列时标记
+        while (!que.isEmpty()) {
+            int curX = que.poll();
+            int curY = que.poll();
+            for (int i = 0; i < 4; i++) {
+                int nextX = curX + move[i][0];
+                int nextY = curY + move[i][1];
+                if (0 > nextX || nextX >= grid.length || 0 > nextY || nextY >= grid[0].length)
+                    continue;
+                if (!visited[nextX][nextY] && grid[nextX][nextY] == 1) {
+                    count++;
+                    visited[nextX][nextY] = true;
+                    que.offer(nextX);
+                    que.offer(nextY);
+                }
+            }
+
+        }
+    }
+}
