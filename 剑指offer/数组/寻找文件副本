@@ -1,0 +1,44 @@
+设备中存有 n 个文件，文件 id 记于数组 documents。若文件 id 相同，则定义为该文件存在副本。请返回任一存在副本的文件 id。
+
+ 
+
+示例 1：
+
+输入：documents = [2, 5, 3, 0, 5, 0]
+输出：0 或 5
+
+0 ≤ documents[i] ≤ n-1
+2 <= n <= 100000
+
+class Solution {
+    public int findRepeatDocument(int[] documents) {
+        // 暴力
+        // int[] hash = new int[100001];
+        // for (int i = 0; i < documents.length; i++) {
+        //     hash[documents[i]]++;
+        // }
+        // for (int i = 0; i < hash.length; i++) {
+        //     if (hash[i] > 1)
+        //         return i;
+        // }
+        // return -1;
+
+        //原地交换
+        for(int i = 0;i<documents.length;){
+            if(documents[i]==i){
+                i++;
+                continue;
+            }
+            if(documents[i]==documents[documents[i]]){
+                return documents[i];
+            }
+            else{
+                // 交换后不能直接遍历下一个元素
+                int temp = documents[documents[i]];
+                documents[documents[i]] = documents[i];
+                documents[i] = temp;
+            }
+        }
+        return -1;
+    }
+}
