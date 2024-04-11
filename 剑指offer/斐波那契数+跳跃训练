@@ -1,0 +1,55 @@
+斐波那契数 （通常用 F(n) 表示）形成的序列称为 斐波那契数列 。该数列由 0 和 1 开始，后面的每一项数字都是前面两项数字的和。也就是：
+
+F(0) = 0，F(1) = 1
+F(n) = F(n - 1) + F(n - 2)，其中 n > 1
+给定 n ，请计算 F(n) 。
+
+答案需要取模 1e9+7(1000000007) ，如计算初始结果为：1000000008，请返回 1。
+
+class Solution {
+    // 递归超时
+    // public int fib(int n) {
+    //     if (n == 0)
+    //         return 0;
+    //     if (n == 1)
+    //         return 1;
+    //     return fib(n - 1) + fib(n - 2);
+    // }
+
+    // 动规
+    public int fib(int n) {
+        if(n == 0) return 0;
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        dp[1] = 1;
+        for(int i = 2; i <= n; i++){
+            dp[i] = dp[i-1] + dp[i-2];
+            dp[i] %= 1000000007;
+        }
+        return dp[n];
+    }
+}
+
+
+今天的有氧运动训练内容是在一个长条形的平台上跳跃。平台有 num 个小格子，每次可以选择跳 一个格子 或者 两个格子。请返回在训练过程中，学员们共有多少种不同的跳跃方式。
+
+结果可能过大，因此结果需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+
+class Solution {
+    public int trainWays(int num) {
+        if (num == 0 || num == 1)
+            return 1;
+        int[] dp = new int[num + 1];
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i < num + 1; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+            dp[i] = dp[i] % 1000000007;
+        }
+        return dp[num];
+    }
+}
+
+
+
+
