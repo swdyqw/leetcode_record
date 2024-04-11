@@ -1,0 +1,94 @@
+某二叉树的先序遍历结果记录于整数数组 preorder，它的中序遍历结果记录于整数数组 inorder。请根据 preorder 和 inorder 的提示构造出这棵二叉树并返回其根节点。
+
+ 
+
+注意：preorder 和 inorder 中均不含重复数字。
+
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ * int val;
+ * TreeNode left;
+ * TreeNode right;
+ * TreeNode() {}
+ * TreeNode(int val) { this.val = val; }
+ * TreeNode(int val, TreeNode left, TreeNode right) {
+ * this.val = val;
+ * this.left = left;
+ * this.right = right;
+ * }
+ * }
+ */
+class Solution {
+    public TreeNode deduceTree(int[] preorder, int[] inorder) {
+        TreeNode root = traviersal(preorder, inorder, 0, preorder.length, 0, inorder.length);
+        return root;
+    }
+
+    public TreeNode traviersal(int[] preorder, int[] inorder, int preorderLeft, int preorderRight, int inorderLeft,
+            int inorderRight) {
+        if (inorderLeft >= inorderRight || preorderLeft >= preorderRight) {
+            return null;
+        }
+        TreeNode root = new TreeNode(preorder[preorderLeft]);
+        int midIndex = 0;
+        for (int i = inorderLeft; i < inorderRight; i++) {
+            if (inorder[i] == root.val) {
+                midIndex = i;
+                break;
+            }
+        }
+        int leftPreorderStart = preorderLeft + 1;
+        int leftPreorderEnd = leftPreorderStart + midIndex - inorderLeft; // 不要忘记减去inorderLeft
+        int rightPreorderStart = leftPreorderEnd;
+        int rightPreorderEnd = preorderRight;
+
+        int leftInorderStart = inorderLeft;
+        int leftInorderEnd = midIndex;
+        int rightInorderStart = midIndex + 1;
+        int rightInorderEnd = inorderRight;
+
+        root.left = traviersal(preorder, inorder, leftPreorderStart, leftPreorderEnd, leftInorderStart, leftInorderEnd);
+        root.right = traviersal(preorder, inorder, rightPreorderStart, rightPreorderEnd, rightInorderStart,
+                rightInorderEnd);
+        return root;
+    }
+}
+
+// 哈希效率更好
+class Solution {
+    public TreeNode deduceTree(int[] preorder, int[] inorder) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++) {
+            map.put(inorder[i], i);
+        }
+        TreeNode root = traviersal(preorder, inorder, 0, preorder.length, 0, inorder.length, map);
+        return root;
+    }
+
+    public TreeNode traviersal(int[] preorder, int[] inorder, int preorderLeft, int preorderRight, int inorderLeft,
+            int inorderRight, HashMap<Integer, Integer> map) {
+        if (inorderLeft >= inorderRight || preorderLeft >= preorderRight) {
+            return null;
+        }
+        TreeNode root = new TreeNode(preorder[preorderLeft]);
+        int midIndex = map.get(root.val);
+        int leftPreorderStart = preorderLeft + 1;
+        int leftPreorderEnd = leftPreorderStart + midIndex - inorderLeft; // 不要忘记减去inorderLeft
+        int rightPreorderStart = leftPreorderEnd;
+        int rightPreorderEnd = preorderRight;
+
+        int leftInorderStart = inorderLeft;
+        int leftInorderEnd = midIndex;
+        int rightInorderStart = midIndex + 1;
+        int rightInorderEnd = inorderRight;
+
+        root.left = traviersal(preorder, inorder, leftPreorderStart, leftPreorderEnd, leftInorderStart, leftInorderEnd,
+                map);
+        root.right = traviersal(preorder, inorder, rightPreorderStart, rightPreorderEnd, rightInorderStart,
+                rightInorderEnd, map);
+        return root;
+    }
+}
