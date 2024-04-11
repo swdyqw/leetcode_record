@@ -1,0 +1,33 @@
+书店店员有一张链表形式的书单，每个节点代表一本书，节点中的值表示书的编号。为更方便整理书架，店员需要将书单倒过来排列，就可以从最后一本书开始整理，逐一将书放回到书架上。请倒序返回这个书单链表。
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ * int val;
+ * ListNode next;
+ * ListNode() {}
+ * ListNode(int val) { this.val = val; }
+ * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public int[] reverseBookList(ListNode head) {
+        ListNode pre = null;
+        int cnt = 0;
+        while (head != null) {
+            cnt++;
+            ListNode temp = head.next;
+            head.next = pre;
+            pre = head;
+            head = temp;
+        }
+        int[] res = new int[cnt];
+        int index = 0;
+        while (pre != null) {
+            res[index++] = pre.val;
+            pre = pre.next;
+        }
+        return res;
+    }
+}
