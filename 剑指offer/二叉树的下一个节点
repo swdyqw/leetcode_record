@@ -1,0 +1,61 @@
+给定一个二叉树其中的一个结点，请找出中序遍历顺序的下一个结点并且返回。注意，树中的结点不仅包含左右子结点，同时包含指向父结点的next指针。下图为一棵有9个节点的二叉树。树中从父节点指向子节点的指针用实线表示，从子节点指向父节点的用虚线表示
+
+
+import java.util.*;
+/*
+public class TreeLinkNode {
+    int val;
+    TreeLinkNode left = null;
+    TreeLinkNode right = null;
+    TreeLinkNode next = null;
+
+    TreeLinkNode(int val) {
+        this.val = val;
+    }
+}
+*/
+public class Solution {
+    List<TreeLinkNode> res = new ArrayList<>();
+    public TreeLinkNode GetNext(TreeLinkNode pNode) {
+        TreeLinkNode root = pNode;
+        while(root.next!=null) root = root.next;
+        inorder(root);
+        for(int i =0;i<res.size()-1;i++){
+            if(res.get(i)==pNode) return res.get(i+1);
+        }
+        return null;
+    }
+    public void inorder(TreeLinkNode root){
+        if(root==null) return;
+        inorder(root.left);
+        res.add(root);
+        inorder(root.right);
+    }
+}
+
+// import java.util.*;
+// public class Solution {
+//     public TreeLinkNode GetNext(TreeLinkNode pNode) {
+//         // 情况一
+//         if(pNode.right != null) {
+//             TreeLinkNode rchild = pNode.right;
+//             // 一直找到右子树的最左下的结点为返回值
+//             while(rchild.left != null) rchild = rchild.left;
+//             return rchild;
+//         }
+         
+//         // 情况二
+//         if(pNode.next != null && pNode.next.left == pNode) {
+//             return pNode.next;
+//         }
+         
+//         // 情况三
+//         if(pNode.next != null) {
+//             TreeLinkNode ppar = pNode.next;
+//             // 沿着左上一直爬树，爬到当前结点是其父节点的左自己结点为止
+//             while(ppar.next != null && ppar.next.right == ppar) ppar = ppar.next;
+//             return ppar.next;
+//         }
+//         return null;
+//     }
+// }
