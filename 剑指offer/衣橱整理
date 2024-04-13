@@ -1,0 +1,33 @@
+家居整理师将待整理衣橱划分为 m x n 的二维矩阵 grid，其中 grid[i][j] 代表一个需要整理的格子。整理师自 grid[0][0] 开始 逐行逐列 地整理每个格子。
+
+整理规则为：在整理过程中，可以选择 向右移动一格 或 向下移动一格，但不能移动到衣柜之外。同时，不需要整理 digit(i) + digit(j) > cnt 的格子，其中 digit(x) 表示数字 x 的各数位之和。
+
+请返回整理师 总共需要整理多少个格子。
+
+
+class Solution {
+    int res = 0;
+    int[][] visited;
+
+    public int wardrobeFinishing(int m, int n, int cnt) {
+        visited = new int[m][n];
+        res = traversal(m, n, 0, 0, cnt);
+        return res;
+    }
+
+    public int traversal(int m, int n, int i, int j, int cnt) {
+        if (i < 0 || i >= m || j < 0 || j >= n || digit(i) + digit(j) > cnt || visited[i][j] == 1)
+            return 0;
+        visited[i][j] = 1;
+        return 1 + traversal(m, n, i + 1, j, cnt) + traversal(m, n, i, j + 1, cnt);
+    }
+
+    public int digit(int x) {
+        int res = 0;
+        while (x >= 10) {
+            res += x % 10;
+            x = x / 10;
+        }
+        return res + x;
+    }
+}
