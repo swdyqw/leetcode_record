@@ -1,0 +1,27 @@
+字母迷宫游戏初始界面记作 m x n 二维字符串数组 grid，请判断玩家是否能在 grid 中找到目标单词 target。
+注意：寻找单词时 必须 按照字母顺序，通过水平或垂直方向相邻的单元格内的字母构成，同时，同一个单元格内的字母 不允许被重复使用 。
+
+
+class Solution {
+    public boolean wordPuzzle(char[][] grid, String target) {
+        // i j 代表地图中元素的行列位置，k 代表target目前位置
+        char[] word = target.toCharArray();
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (traversal(grid, word, i, j, 0))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean traversal(char[][] grid, char[] word, int i,int j,int k){
+        if(i<0||i>=grid.length||j<0||j>=grid[0].length||grid[i][j]!=word[k]) return false;
+        if(k==word.length-1) return true;
+        grid[i][j]='\0';
+        boolean res = traversal(grid,word,i+1,j,k+1)||traversal(grid,word,i-1,j,k+1)||
+                      traversal(grid,word,i,j+1,k+1)||traversal(grid,word,i,j-1,k+1);
+        grid[i][j]=word[k];
+        return res;
+    }
+}
