@@ -1,0 +1,82 @@
+给定单向链表的头指针和一个节点指针，定义一个函数在O(1)时间内删除该节点。
+public void deleteNode(ListNode head, ListNode toBeDeleted) {
+        if(head==null||toBeDeleted==null) return;
+        if(toBeDeleted.next!=null){
+            ListNode next = toBeDeleted.next;
+            toBeDeleted.value = next.value;
+            toBeDeleted.next = next.next;
+            next = null;
+        } else if (head == toBeDeleted) {
+            head = null;
+        }
+        else {
+            ListNode cur = head;
+            while (cur.next!=toBeDeleted){
+                cur=cur.next;
+            }
+            cur.next=null;
+        }
+    }
+
+
+给定一个已排序的链表的头 head ， 删除所有重复的元素，使每个元素只出现一次 。返回 已排序的链表 。
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ * int val;
+ * ListNode next;
+ * ListNode() {}
+ * ListNode(int val) { this.val = val; }
+ * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode cur = head;
+        while (cur != null && cur.next != null) {
+            if (cur.val == cur.next.val)
+                cur.next = cur.next.next;
+            else
+                cur = cur.next;
+        }
+        return head;
+    }
+}
+
+
+给定一个已排序的链表的头 head ， 删除原始链表中所有重复数字的节点，只留下不同的数字 。返回 已排序的链表 。
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ * int val;
+ * ListNode next;
+ * ListNode() {}
+ * ListNode(int val) { this.val = val; }
+ * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+        ListNode pre = dummy;
+        ListNode cur = head;
+        while (cur != null && cur.next != null) {
+            if (pre.next.val != cur.next.val) {
+                pre = cur;
+                cur = cur.next;
+            } else {
+                while (cur != null && cur.next != null && pre.next.val == cur.next.val) {
+                    cur = cur.next;
+                }
+                pre.next = cur.next;
+                cur = cur.next;
+            }
+        }
+        return dummy.next;
+    }
+}
+
