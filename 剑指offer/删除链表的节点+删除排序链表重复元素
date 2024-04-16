@@ -65,6 +65,7 @@ class Solution {
         ListNode pre = dummy;
         ListNode cur = head;
         while (cur != null && cur.next != null) {
+\\ 因为pre刚开始没有值 所以比较他们的下一个
             if (pre.next.val != cur.next.val) {
                 pre = cur;
                 cur = cur.next;
